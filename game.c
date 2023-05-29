@@ -4,15 +4,10 @@
 
 #include "game.h"
 #include <stdlib.h>
+#include <malloc.h>
 
-int *a1;
-int *a2;
-
-int Location(int x,int y)
-{
-    *a1 = x - 1;
-    *a2 = y - 1;
-}
+int a1 = 0;
+int a2 = 0;
 
 void InitBoard(char board[ROW][COL],int row,int col)
 {
@@ -78,7 +73,7 @@ void PlayerMove(char board[ROW][COL],int row,int col){
             if(board[x - 1][y - 1] == ' ')
             {
                 board[x - 1][y - 1] = 'o';
-                Location(x,y);
+                a1 = x - 1,a2 = y - 1;
                 break;
             }else
             {
@@ -98,6 +93,9 @@ void ComputerMove(char board[ROW][COL],int row,int col)
         int x = rand() % ROW;
         int y = rand() % COL;
 
+        a1 = x;
+        a2 = y;
+
         if(board[x][y] == ' ')
         {
             board[x][y] = 'x';
@@ -109,47 +107,46 @@ void ComputerMove(char board[ROW][COL],int row,int col)
 char Is_Win(char board[ROW][COL],int row,int col)
 {
     //列一致  》》》  a1 = x
-    if(*a1 > 0)
-    {
-        if(board[*a1][*a2 - 1] == board[*a1][*a2] == board[*a1][*a2 + 1] && board[*a1][*a2] != ' ')
+        if(board[a1][a2 - 1] == board[a1][a2] && board[a1][a2 + 1] == board[a1][a2] && board[a1][a2] != ' ')
         {
-            return board[*a1][*a2];
-        }
-    }else if(*a1 == 0)
-    {
-        if(board[*a1][*a2 + 1] == board[*a1][*a2] == board[*a1][*a2 + 2] && board[*a1][*a2] != ' ')
+            return board[a1][a2];
+        }else if(board[a1][a2 - 1] == board[a1][a2] && board[a1][a2 - 2] == board[a1][a2] && board[a1][a2] != ' ')
         {
-            return board[*a1][*a2];
-        }
-    }else if(*a1 = row - 1)
-    {
-        if(board[*a1][*a2 - 1] == board[*a1][*a2] == board[*a1][*a2 - 2] && board[*a1][*a2] != ' ')
+            return board[a1][a2];
+        }else if(board[a1][a2 + 1] == board[a1][a2] && board[a1][a2] == board[a1][a2 + 2] && board[a1][a2] != ' ')
         {
-            return board[*a1][*a2];
+            return board[a1][a2];
         }
-    }
 
     //行一致  》》》  a2 = y
-    if(*a2 > 0)
-    {
-        if(board[*a1 - 1][0] == board[*a1][1] == board[*a1 + 1][2] && board[*a1][*a2] != ' ')
+        if(board[a1 - 1][a2] == board[a1][a2] && board[a1 + 1][a2] == board[a1][a2] && board[a1][a2] != ' ')
         {
-            return board[*a1][*a2];
-        }
-    }else if(*a2 == 0)
-    {
-        if(board[*a1 + 1][*a2] == board[*a1][*a2] == board[*a1 + 2][*a2] && board[*a1][*a2] != ' ')
+            return board[a1][a2];
+        }else if(board[a1 + 1][a2] == board[a1][a2] && board[a1 + 2][a2] == board[a1][a2] && board[a1][a2] != ' ')
         {
-            return board[*a1][*a2];
-        }
-    }else if(*a2 = col - 1)
-    {
-        if(board[*a1 - 1][*a2] == board[*a1][*a2] == board[*a1 - 2][*a2] && board[*a1][*a2] != ' ')
+            return board[a1][a2];
+        }else if(board[a1 - 1][a2] == board[a1][a2] && board[a1 - 2][a2] == board[a1][a2] && board[a1][a2] != ' ')
         {
-            return board[*a1][*a2];
+            return board[a1][a2];
         }
+    //对角线一致
+    if(board[0][0] == board[1][1] && board [2][2] == board[1][1] && board[0][0] != ' ')
+    {
+        return board[0][0];
+    }else if(board[2][0] == board[1][1] && board [0][2] == board[1][1] && board[0][2] != ' ')
+    {
+        return board[1][1];
     }
 
-    //对角线一致
-    if()
+    //平局
+    for(int i = 0; i < col;i++)
+    {
+        for(int j = 0;j < row;j++)
+        {
+            if(board[i][j] == ' ')
+            {
+                return 'C';
+            }
+        }
+    }
 }

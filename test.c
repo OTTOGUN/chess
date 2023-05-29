@@ -21,6 +21,7 @@ void game()
     DisplayBoard(board,ROW,COL);
     printf("\n");
     //玩家移动
+loop:
     PlayerMove(board,ROW,COL);
     DisplayBoard(board,ROW,COL);
     printf("\n");
@@ -29,6 +30,7 @@ void game()
     if(flag == 'o')
     {
         printf("玩家赢\n");
+        goto end;
     }
     //电脑移动
     ComputerMove(board,ROW,COL);
@@ -36,6 +38,16 @@ void game()
     printf("\n");
     //判断电脑是否输赢
     flag = Is_Win(board,ROW,COL);
+    if(flag == 'x')
+    {
+        printf("电脑赢\n");
+    }else if(flag == 'P'){
+        printf("平局！\n");
+    }else if(flag == 'C')
+    {
+        goto loop;
+    }
+    end:;
 }
 
 void test()
